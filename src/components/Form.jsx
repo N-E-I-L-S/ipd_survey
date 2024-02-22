@@ -1,30 +1,26 @@
 import React, { useState } from 'react'
 
-export default function Form({label, index}) {
-    console.log({label})
-    const [response , setResponse] = useState([[]])
-    function handleClick(optionindex){
-      console.log(optionindex)
-      console.log(index)
-    }
+export default function Form({ label, index,  onOptionClick }) {
+
+  function handleClick(optionindex) {
+      onOptionClick(optionindex);
+  }
   return (
     <div>
-        <div>
-            options:
-            {
-              label.map((i, optionindex)=>{
-                return(
-                  <div className="">
-                  <input type="radio" value={optionindex} name={index}  /> {i}
-                  </div>
-                // <div className="" onClick={()=>handleClick(optionindex)}>
-                //   {i}
-                // </div>
-                )
-              })
-            }
-            {/* {labels} */}
+      <div>
+        Section {index}:
+        <div className="p-4">
+          {
+            label.map((i, optionindex) => {
+              return (
+                <div key={optionindex} className="">
+                  <input type="radio" value={optionindex} name={index} onChange={() => handleClick(optionindex)}/> {i}
+                </div>
+              )
+            })
+          }
         </div>
+      </div>
     </div>
   )
 }
