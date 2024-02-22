@@ -35,8 +35,8 @@ export default function FormPage() {
     ["I have not noticed any recent change in my interest in sex.", "I am less interested in sex than I used to be.", "I have almost no interest in sex.", "I have lost interest in sex completely."]
   ]
   const [responses, setResponses] = useState([]);
-
-  const handleFormSubmit = async () => {
+  const [submitted, setSubmitted] = useState(false)
+   const handleFormSubmit = async () => {
     console.log('Responses:', responses);
     const url = `https://ipd-backend-hd6n.onrender.com/api/survey`
     try {
@@ -49,7 +49,10 @@ export default function FormPage() {
         body: JSON.stringify(body),
       });
       if (response.status === 200)
-        console.log('ok')
+        {
+          console.log("ok")
+          setSubmitted(true)
+        }
       else
         console.log('error')
     }
@@ -65,19 +68,24 @@ export default function FormPage() {
   }
   return (
     <div className="p-4 bg-[#212121] text-white">
-      <h2 className='text-center font-bold text-xl'>Survey Form</h2>
-      <p className='text-center text-md'>Please select the option from each section that best suits you</p>
-      <p className='text-center text-sm italic'>Kindly select from atleast 10 sections</p>
-      <div className='p-8'>
-        {
-          labels.map((label, index) => {
-            return (
-              <Form key={index} label={label} index={index + 1} onOptionClick={(optionIndex) => setResponses((prevResponses) => [...prevResponses, { questions: index + 1, answer: optionIndex }])} />
-            )
-          })
-        }
-        <div className="p-4">
-          <button disabled={checkResponseLength()} onClick={handleFormSubmit} className={`mt-4 bg-blue-500 text-white py-2 px-4 rounded ${checkResponseLength() ? 'opacity-50' : ''}`}>Submit</button>
+      <div className={`${submitted? 'flex' : 'hidden'} w-full h-[100vh] justify-center items-center`}>
+        Thank you. Your response has been recorded! You may close this tab now
+      </div>
+      <div className={`${submitted? 'hidden' : 'block'}`}>
+        <h2 className='text-center font-bold text-xl'>Survey Form</h2>
+        <p className='text-center text-md'>Please select the option from each section that best suits you</p>
+        <p className='text-center text-sm italic'>Kindly select from atleast 10 sections</p>
+        <div className='p-8'>
+          {
+            labels.map((label, index) => {
+              return (
+                <Form key={index} label={label} index={index + 1} onOptionClick={(optionIndex) => setResponses((prevResponses) => [...prevResponses, { questions: index + 1, answer: optionIndex }])} />
+              )
+            })
+          }
+          <div className="p-4">
+            <button disabled={checkResponseLength()} onClick={handleFormSubmit} className={`mt-4 bg-blue-500 text-white py-2 px-4 rounded ${checkResponseLength() ? 'opacity-50' : ''}`}>Submit</button>
+          </div>
         </div>
       </div>
     </div>
