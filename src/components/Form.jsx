@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-export default function Form({label}) {
-    const values = [0, 1, 2, 3];
+export default function Form({label, index}) {
     console.log({label})
     const [response , setResponse] = useState([[]])
-    function handleClick(index){
+    function handleClick(optionindex){
+      console.log(optionindex)
       console.log(index)
     }
   return (
@@ -12,11 +12,14 @@ export default function Form({label}) {
         <div>
             options:
             {
-              label.map((i, index)=>{
+              label.map((i, optionindex)=>{
                 return(
-                <div className="" onClick={()=>handleClick(index)}>
-                  {i}
-                </div>
+                  <div className="">
+                  <input type="radio" value={optionindex} name={index}  /> {i}
+                  </div>
+                // <div className="" onClick={()=>handleClick(optionindex)}>
+                //   {i}
+                // </div>
                 )
               })
             }
