@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Form from '../components/Form'
+import Loader from '../components/Loader';
 
 export default function FormPage() {
   const labels = [
@@ -34,9 +35,11 @@ export default function FormPage() {
     ["I am no more worried about my health than usual.", "I am worried about physical problems like aches, pains, upset stomach, or constipation.", "I am very worried about physical problems and it's hard to think of much else.", "I am so worried about my physical problems that I cannot think of anything else."],
     ["I have not noticed any recent change in my interest in sex.", "I am less interested in sex than I used to be.", "I have almost no interest in sex.", "I have lost interest in sex completely."]
   ]
+  const [loading, setLoading] = useState(false)
   const [responses, setResponses] = useState([]);
   const [submitted, setSubmitted] = useState(false)
    const handleFormSubmit = async () => {
+    setLoading(true)
     console.log('Responses:', responses);
     const url = `https://ipd-backend-hd6n.onrender.com/api/survey`
     try {
@@ -59,6 +62,7 @@ export default function FormPage() {
     catch {
       console.log('error')
     }
+    setLoading(false)
   };
   function checkResponseLength() {
     const length = responses.length
@@ -66,6 +70,8 @@ export default function FormPage() {
       return false
     return true
   }
+  if(loading)
+  return <Loader/>
   return (
     <div className="p-4 bg-[#212121] text-white">
       <div className={`${submitted? 'flex' : 'hidden'} w-full h-[100vh] justify-center items-center`}>
